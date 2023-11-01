@@ -1,0 +1,81 @@
+pipeline {
+    agent any
+    environment {
+        AWS_ACCESS_KEY = credentials('aws-access-key-id')
+        AWS_SECRET_KEY = credentials('aws-secret-key-id')
+        GITHUB_CREDENTIALS = credentials('github')
+	SECRET_FILE=crenentials('secret_file')
+    }
+    parameters {
+        string(defaultValue: 'ARTISANTEK', name: 'COMPANY')
+        choice(choices: ['DEV', 'UAT', 'PROD'], name: 'DEPLOYMENT')
+    }
+    stages {
+        stage('checkout') {
+            steps {
+                echo "${env.JENKINS_HOME}"
+                echo "${env.JENKINS_URL}"
+                echo "${env.COMPANY}"
+                echo "${env.BUILD_NUMBER}"
+                echo "${env.JOB_NAME}"
+                echo '${AWS_ACCESS_KEY}'
+		echo 'secret file link ${secret_file}'
+               
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/Ravikodekal/java-example.git'
+            }
+        }
+
+        stage('test') {
+            parallel {
+                stage('unit testing') {
+                    steps {
+                        echo "Running unit tests"
+                        sh 'sleep 5'
+                    }
+                }
+
+                stage('integration testing') {
+                    steps {
+                        echo "Running integration tests"
+                        sh 'sleep 5'
+                    }
+                }
+            }
+            environment {
+                test = "test"
+            }
+        }
+
+        stage('code quality') {
+            steps {
+                echo "checking code quality"
+                echo "code quality is satisfied"
+            }
+        }
+
+        stage('build') {
+            agent any
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('push to artifactory') {
+            agent {
+                label 'tomcat'
+            }
+            steps {
+                echo "artifacts are saved in artifactory"
+            }
+        }
+
+        stage('deploy') {
+            agent {
+                label 'tomcat'
+            }
+            steps {
+                echo "deploying war files in tomcat server"
+            }
+        }
+    }
+}

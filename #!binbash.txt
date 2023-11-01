@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Define Jenkins URL and API token
+JENKINS_URL="http://43.205.130.254:8080/"
+API_TOKEN="118f97a426bf613f685ee965637be1163b"
+
+# Define the job name
+JOB_NAME="demo-test1"
+
+# Trigger the Jenkins job
+java -jar jenkins-cli.jar -s $JENKINS_URL -auth admin:$API_TOKEN build $JOB_NAME -s
+
+# Check the status of the job
+STATUS=$(java -jar jenkins-cli.jar -s $JENKINS_URL -auth admin:$API_TOKEN lastBuild $JOB_NAME --status)
+echo "Job Status: $STATUS"
+
+
+
+#!/bin/bash
+
+# Jenkins Configuration
+JENKINS_URL="http://43.205.130.254:8080/"
+USERNAME="ravi"
+API_TOKEN="118f97a426bf613f685ee965637be1163b"
+JOB_NAME="demo-test1"
+
+# Trigger Jenkins Job
+curl -X POST -u $USERNAME:$API_TOKEN "$JENKINS_URL/job/$JOB_NAME/build"
+
+# Wait for the job to finish (you can adjust the sleep duration based on your job's runtime)
+sleep 10
+
+# Get Job Status
+JOB_STATUS=$(curl -u $USERNAME:$API_TOKEN "$JENKINS_URL/job/$JOB_NAME/lastBuild/api/json" | jq -r '.result')
+
+# Print Job Status
+echo "Job Status: $JOB_STATUS"
+
+
+
+#!/bin/bash
+
+# Jenkins Configuration
+JENKINS_URL="http://43.205.130.254:8080/"
+USERNAME="ravi"
+API_TOKEN="118f97a426bf613f685ee965637be1163b"
+JOB_NAME="demo-test1"
+
+# Trigger Jenkins Job
+echo "Triggering Jenkins Job..."
+curl -X POST -u $USERNAME:$API_TOKEN "$JENKINS_URL/job/$JOB_NAME/build"
+
+# Wait for the job to finish (you can adjust the sleep duration based on your job's runtime)
+echo "Waiting for the job to finish..."
+sleep 30
+
+# Get Job Status
+echo "Fetching Job Status..."
+JOB_STATUS=$(curl -u $USERNAME:$API_TOKEN "$JENKINS_URL/job/$JOB_NAME/lastBuild/api/json" | jq -r '.result')
+
+# Print Job Status
+echo "Job Status: $JOB_STATUS"

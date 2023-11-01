@@ -1,0 +1,397 @@
+----------------------------------------
+Jenkins
+----------------------------------------
+CI/CD
+
+Continuous Integration-development practice that requires developers to integrate code.
+
+Continuous Deployment-picks up from where the continuous intergration ends, 
+automates the delivery of builds/applications to desired environments.
+
+Continuous Delivery- goes one step ahead of deployment, every change that passes all stages of testing environments
+along production and is released to the desired customers.
+
+CI/CD practices are intergral to the Devops.
+
+Artifacts: Compiled verison the code/builds which could include dependencies.
+
+Artifactory: a central location which is accessed by multiple partner applications used to store artifacts.
+
+JFrog is the most popular one, Dockerhub , ECR etc..
+-------------------------------------------
+
+Jenkins- CI/CD tool-JAVA.
+
+Jenkins is an open-source automation tool written in Java with plugins built for Continuous Integration purposes.
+
+Jenkins is used to build and test your software projects continuously making it easier for developers to integrate
+changes to the project, and making it easier for users to obtain a fresh build. It also allows you to continuously
+deliver your software by integrating with a large number of testing and deployment technologies. 
+
+
+alternatives:
+Code pipeline-AWS
+Azure pipeline-Azure
+
+open source automation tool, that automates the software deployment process/lifecycle using multiple stages.
+
+Installation:
+
+jenkins.io
+
+Post installation:
+
+- Install GIT,Maven,MAKE etc as per requirement.
+
+home directory:
+/var/lib/jenkins
+
+Plugins: 
+  The plugins help in increasing the capabilities of jenkins by adding some useful features that might help
+	 you to enhance productivity.There are more than 15000 plugins available to increase our productivity with
+	 jenkins
+
+
+1.Monitoring plugin--> to monitor jenkins server/master
+2.Docker --> used to integrate docker operations on jenkins (UI).
+3.Kubernetes --> used to integrate k8s operations on jenkins.
+4.Blueocean --> To graphically visualize jenkins.
+5.clearthinbackup --> to backup jenkins
+6.Parameterised plugin --> used to introduce parameters in jenkins job/pipeline.
+7.Maven/ANT/Gradle --> plugins to enable respective build operations.
+
+----------------------------------------------------------------
+----------------------------------------------------------------
+
+Build Triggers:
+
+1.Build Periodically :
+       if u want to shedule or build periodically that is a particular interval of time then we can select
+	   build periodically option from the build triggers 
+	   commits the changes when trigger at particular time ex:evey monady it will build
+  
+2.POLL SCM :
+       POLL SCM periodically polls the source code management tool to check whether changes were made 
+	   (i.e new commits) and builds the project if new commits are pushed
+	   you will the commit the changes now it build in that period,it will build trigger at the particular period once 
+	   we are commit done any changes
+3.GitHub Webhook Trigger :
+      GitHub Webhooks in Jenkins are used to trigger the build  as soon as a developer commits somethings to
+	  the branch 
+	  we dont specify the time it will trigger when there is new commit
+
+----------------------------------------------------------------
+--------------------------------------------------------------------------
+
+==> Matrix Security	 :
+    Matrix Authorization allows configuring the permissions for each user individually based on their role
+
+Project-Based Matrix Authorization Strategy :
+           Is an extension to matrix based security where you can setup permissions	to individual projects
+		   this means that you can allow a specific user to acess only certain projects
+
+
+--------------------------------------------------------------------------
+----------------------------------------------------------------
+Master-Slave Configuration:
+
+Jenkins master node can be connected to any number of slave machines/agents which help in distributing workload.
+
+Master node -jenkins -which is over loaded.
+slave machines- which are used to distribute the workload of one job/pipeline
+
+
+ Some times you might need several different environments to test your builds this cannot be done by single
+      jenkin server in such scenarios we require a different machine with different setup/environment that takes
+       a specific job from the master 
+
+No of Executers: we are defining the number of parallel jobs that can be run.
+
+
+----------------------------------------------------------------
+----------------------------------------------------------------
+
+
+CI/CD :
+
+ Once dev team pushes the code to github jenkins pipeline job will get triggered,
+    It has 4 stages
+     1.SCM Checkout or GIT Checkout
+     2.Build Stage
+     3.Push Stage
+     4.Deploy Stage
+
+       In Get Checkout stage jenkins will pull the source code from GitHub.once the checkout stage is sucessfull build 
+	   stage will get triggered automatically
+
+       In Build Stage Jenkins will compile the source code and generates a binary.after sucessfull completion of build 
+	    stage push stage will get triggered.
+
+      In Push Stage the binary that was generated during the build stage it will be pushed to an artifactory once that 
+	  is done deploy stage will get triggered 
+
+      In Deploy Stage the binary will be deployed to an environment 
+	  
+Continous Integration (CI) :
+      Is a developement practice that requires developers to integrate code into a shared repository several times
+	  a day.Each check-in is then verified by an automated build,allowing teams to detect problems easily.By Integration
+	  regularly,you can detect errors quickly and locate them more easily
+		
+Continoues Deployment (CD) :
+      Continuous deployment picks up where continuous integration ends.CD automates the deployment of applications to selected 
+	  infrastructure environments.Most teams work with multiple environments other than the production,such as 
+      development and testing environments and CD ensures there is an automated way to push code changes to them.
+
+Continuous Delivery- (CD) :
+     Continuous delivery goes one step further than continuous deployment .with the practice,every change that passes 
+     all the stages of your production pipeline is releasaed to your customers.there's no human intervention,and 
+     only a failed test will prevent a new change to be deployed to production.	  
+	  
+	  
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+Pipeline: In other words, a Jenkins Pipeline is a collection of jobs or events that brings the software 
+           from version control into the hands of the end users by using automation tools. 
+         It is used to incorporate continuous delivery in the software development workflow.
+		 
+	 Pipeline contains a collection of states such as build, deploy, test and release. 
+      These jobs or events are interlinked with each other. Every state has its jobs, 
+       which work in a sequence called a continuous delivery pipeline.	
+		  
+		  1.sequential way
+		  2.Parallel way
+		  3.Parameterised way.
+
+Pipeline usually consists of Agent(location where to run the task),Stages, Steps.
+
+In jenkins usually there is 2 ways of writing a pipeline
+
+1.Scripted pipeline(old method)-Java scripting.
+2.Declarative pipeline (new and simpler)
+
+==> DECLARATIVE PIPELINE 
+1.New way of writing with simple groovy declaratives
+2.Code is written in a file and is checked into git (SCM) and then added to jenkins job
+3.All code is defined inside pipeline block
+
+
+==> SCRIPTED PIPELINE :
+1.Old way / Traditional way of pipeline code with scripted groovy syntax
+2.Code is written directly in jenkins pipeline job which in UI interface
+3.Defined within a node block DECLARATIVE
+
+Ways of writing a pipeline:
+
+
+
+Jenkinsfile:
+Jenkins Pipeline can be defined by a text file called JenkinsFile.You can implement pipeline as code using
+		 JenkinsFile, and this can be defined by using a groovy DSL (Domain Specific Language). With the help of
+		 JenkinsFile,you can write the steps required for running a Jenkins Pipeline.
+Default naming convention : Jenkinsfile.
+
+
+--------------------------------------------------------------------------
+
+CICD Pipeline:
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/artisantek/java-example.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Push') {
+            steps {
+                echo 'This is Push Stage'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'sudo cp target/works-with-heroku-1.0.war /opt/tomcat/apache-tomcat-9.0.68/webapps/'
+            }
+        }
+
+    }
+
+}
+
+--------------------------------------------------
+Pipeline with Agents:
+
+pipeline {
+    agent none
+
+    stages {
+        stage('Stage-1') {
+            agent {label 'tomcat'}
+            steps {
+                sh 'touch tomcat'
+            }
+        }
+
+        stage('Stage-2') {
+            agent {label 'master'}
+            steps {
+                sh 'touch master'
+            }
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+Pipeline with Trigger:
+
+pipeline {
+    agent none
+
+    triggers {pollSCM '* * * * *'}
+
+    stages {
+        stage('Stage-1') {
+            agent {label 'tomcat'}
+            steps {
+                sh 'touch tomcat'
+            }
+        }
+
+        stage('Stage-2') {
+            agent {label 'master'}
+            steps {
+                sh 'touch master'
+            }
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------
+Pipeline with parallel stages:
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Stage-1') {
+            parallel {
+                stage ('Stage-1A') {   
+                    steps {
+                        echo 'Stage 1-A'
+                        sh 'sleep 10'
+                    }
+                }
+
+                stage ('Stage-1B') {   
+                    steps {
+                        echo 'Stage 1-B'
+                        sh 'sleep 10'
+                    }
+                }
+            }
+        }
+
+        stage('Stage-2') {
+            steps {
+                echo 'Stage 2'
+                sh 'sleep 10'
+            }
+        }
+    }
+}
+
+--------------------------------------------------------------------------
+Using environment variables
+ 1. Global variables:
+Jenkins Pipeline exposes environment variables via the global variable env, which is available from anywhere within a Jenkinsfile. 
+
+pipeline {
+    agent any
+    stages {
+        stage('Example') {
+            steps {
+                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+            }
+        }
+    }
+}
+
+2. Setting environment variables
+Declarative Pipeline ----> environment block, whereas Scripted Pipeline ----> withEnv block
+
+pipeline {
+    agent any
+    environment { 
+        ENV= 'dev'
+    }
+    stages {
+        stage('Example') {
+            environment { 
+                
+            }
+            steps {
+
+            }
+        }
+    }
+}
+
+-------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------
+Branching strategy
+
+Types of branches
+
+-Master/Main
+-Develop
+-Feature 
+-Release
+-Hotfix/Bugfix branch.
+
+We follow very simple branching strategy which involves around 5 branches.
+1.	Master branch
+2.	Dev branch
+3.	Feature branch
+4.	Release branch
+5.	Hotfix branch
+
+Master is our main branch which contains production level stable code in it.
+
+We create Dev branch from Master branch itself, which contains Pre-production code in it. Whenever the developers are assigned to add new features to the application then we create feature branch out of Dev branch.
+
+Feature branch is short lived branch,its created and allocated to different developers.                                               When developer is done with code development he will raise
+a pull request to merge feature branch and we devops engineers act as admin to approve this pull request and merge it to Dev branch.
+
+Once all the development is done we create a Release branch from Dev branch and this release branch will have final updated code
+for particular release.
+We pick code from release branch using webhook trigger and deploy it into different testing environments.
+
+All the testing environments.
+And we have classified testing environments under different namespaces as 
+1.	DEV
+2.	QA,
+3.	UAT,
+4.	PROD etc.
+Based on requirements Jenkins will release the updated code to respective branches one by one as we progress down the line.
+
+If there are any changes need to be done to code or any bug needs to be fixed immediately, then we create a Hotfix branch from 
+Release branch and code is updated by a developer and again merged to release branch via pull request.
+Here a New commit will be added and thus Jenkins job will get triggered and Code is deployed to respective Kubernetes environment.
+
+WE are manually pushing code from one testing environemt to another. This is done by adding Environment Namespaces as Environment 
+variables in Jenkins.
+Once the code changes passes all the stages then a PR is raised to merge Release branch to Dev branch and from their again to 
+Master branch.
+Like this Master branch will contain stable production code at the end.
+---------------------------------------------------------------------------------------
+
+
