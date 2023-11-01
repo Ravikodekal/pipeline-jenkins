@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    
+     environment {
+	    
+	AWS_REGION = "ap-south-1"
+	AWS_ECR_URL = "887905533173.dkr.ecr.ap-south-1.amazonaws.com"
+	ECR_LOGIN = "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${AWS_ECR_URL}"
+}
+
+    stages {
+        stage('Checkout') {
+            steps {
+                
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Ravikodekal/java-example.git']])
+            }
+        }
+
+        stage('Build') {
+            steps {
+            
+                sh 'docker build -t java:assign .'
+            }
+        }
+
+        stage('Push') {
+            steps {
+            
+                sh "$ECR_LOGIN"
+                sh 'docker tag java:assign 887905533173.dkr.ecr.ap-south-1.amazonaws.com/ravik:javamulti'
+                sh 'docker push 887905533173.dkr.ecr.ap-south-1.amazonaws.com/ravik:javamulti'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+            
+                sh 'docker run -d -p 80:8080 887905533173.dkr.ecr.ap-south-1.amazonaws.com/ravik:javamulti'
+            }
+        }
+    }
+}
