@@ -1,0 +1,376 @@
+CLASS ASSIGNMENTS
+---------------------------------------------------------------------------
+1.biggest of 3 numbesrs#!/bin/bash
+
+echo "Enter three numbers:"
+read num1
+read num2
+read num3
+
+if [ $num1 -gt $num2 ] && [ $num1 -gt $num3 ]; then
+    echo "$num1 is the largest."
+elif [ $num2 -gt $num3 ]; then
+    echo "$num2 is the largest."
+else
+    echo "$num3 is the largest."
+fi
+------------------------------------------------------------------------------------------------------------------------------------------------------
+2.WHETHER GIVEN FILE IS INPUT FILE, DIRECTORY OR LINK
+#!/bin/bash
+
+# Get user input
+read -p "Enter a file or directory path: " input
+
+# Check if the input exists
+if [ -e "$input" ]; then
+
+    if [ -f "$input" ]; then
+        echo "$input is a regular file."
+
+    elif [ -d "$input" ]; then
+        echo "$input is a directory."
+
+    elif [ -L "$input" ]; then
+        echo "$input is a symbolic link."
+    else
+        echo "$input is something else."
+    fi
+else
+    echo "$input does not exist.
+------------------------------------------------------------------------------------------------------------------------------------------------------
+3.Shell script to find the sum of even numbers
+
+
+echo "Please enter the n value"
+read n
+
+sum=0
+i=2
+
+while [ $i -le $n ]; do
+    sum=$((sum+i))
+    i=$((i+2))
+done
+
+echo "The sum of n odd numbers is $sum"
+------------------------------------------------------------------------------------------------------------------------------------------------------
+4.Shell script to get the following output - line Number: Total Number of Character: Total Number of Words
+
+Input:
+We are learning Shell Scripting
+We are working Red Hat Linux Server
+
+Output:
+
+1:32:5:We are learning Shell Scripting
+2:36:7:We are working Red Hat Linux Server
+
+ans-
+#!/bin/bash
+
+i=1
+total_words=0
+
+while read c
+do
+    char=`echo $c | wc -c`
+    words=`echo $c | wc -w`
+    echo "$i: $char characters, $words words"
+    ((i++))
+    ((total_words+=words))
+done < "$1"
+
+echo "Total number of words: $total_words"
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Example: Biggest of 2 Numbers
+
+#!/bin/bash
+
+num1=$1
+num2=$2
+
+if [ $num1 -gt $num2 ]; then
+    echo "$num1 is the greatest of the two numbers"
+else
+    echo "$num2 is the greatest of the two numbers"
+fi
+
+(or)
+
+#!/bin/bash
+
+num1=$1
+num2=$2
+
+if [ $# -ne 2 ]; then
+    echo "Please enter 2 arguments to the script"
+    exit
+fi
+
+
+if [ $num1 -eq $num2 ]; then
+    echo "The numbers are equal"
+elif [ $num1 -gt $num2 ]; then
+    echo "$num1 is the greatest of the two numbers"
+else
+    echo "$num2 is the greatest of the two numbers"
+fi
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Example: Shell script to check whether given input is a file or a directory
+
+#!/bin/bash
+
+echo "Enter the name"
+read name
+
+if [ -f $name ]; then
+    echo "The given input $name is a file"
+elif [ -d $name ]; then
+    echo "The given input $name is a directory"
+else
+    echo "The file or directory does not exist"
+fi
+
+
+(or)
+
+#!/bin/bash
+
+echo "Enter the name"
+read name
+
+if [ -f $name ]; then
+    
+    echo "The given input $name is a file"
+
+    if [ -r $name ]; then
+        echo "The file has read permission"
+    else
+        echo "The file doesnot have read permission"
+        echo "Adding read permission for the owner"
+        chmod u+r $name
+    fi
+
+    if [ -w $name ]; then
+        echo "The file has write permission"
+    else
+        echo "The file doesnot have write permission"
+        echo "Adding write permission for the owner"
+        chmod u+w $name
+    fi
+
+    if [ -x $name ]; then
+        echo "The file has executable permission"
+    else
+        echo "The file doesnot have executable permission"
+        echo "Adding executable permission for the owner"
+        chmod u+x $name
+    fi
+
+
+elif [ -d $name ]; then
+    echo "The given input $name is a directory"
+else
+    echo "The file or directory does not exist"
+fi
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Example: Find the sum of n numbers
+
+#!/bin/bash
+
+echo "Enter the n Value"
+read n
+
+sum=0
+
+while [ $n -gt 0 ]; do
+    sum=`expr $sum + $n`
+    n=`expr $n - 1`
+done
+
+echo "The sum of n numbers is $sum"
+
+(or)
+
+#!/bin/bash
+
+echo "Enter the n Value"
+read n
+
+sum=0
+
+while [ $n -gt 0 ]; do
+    sum=$(($sum + $n))
+    ((n--))
+done
+
+echo "The sum of n numbers is $sum"
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Example: Find the factorial of a number
+
+#!/bin/bash
+
+echo "Please enter the number"
+read n
+
+fact=1
+i=$n
+
+while [ $i -gt 1 ]; do
+    fact=$((fact * i))
+    ((i--))
+done
+
+echo "The factorial of $n is $fact"
+---------------------------------------------------------------------------------------------------------------
+Example: To Find the sum of odd numbers upto n
+
+10 = 1 + 3 + 5 + 7 + 9
+5 = 1 + 3 + 5
+7 = 1 + 3 + 5 + 7
+
+#!/bin/bash
+
+echo "Please enter the n value"
+read n
+
+sum=0
+
+while [ $n -gt 0 ]; do
+    mod=$((n%2))
+    if [ $mod -ne 0 ]; then
+        sum=$((sum + n))
+    fi
+    ((n--))
+done
+
+echo "The sum of n odd numbers is $sum"
+
+(or)
+
+#!/bin/bash
+
+echo "Please enter the n value"
+read n
+
+sum=0
+i=1
+
+while [ $i -le $n ]; do
+    sum=$((sum+i))
+    i=$((i+2))
+done
+
+echo "The sum of n odd numbers is $sum"
+---------------------------------------------------------------------------------------------------------------
+Example: Print the contents of the file
+
+Input:
+We are learning Shell Scripting
+We are working Red Hat Linux Server
+
+Output:
+We are learning Shell Scripting
+We are working Red Hat Linux Server
+
+
+#!/bin/bash
+
+while read line
+do
+    echo $line
+done < $1
+---------------------------------------------------------------------------------------------------------------
+Example: To print the number of characters in each line of the file
+
+Input:
+We are learning Shell Scripting
+We are working Red Hat Linux Server
+
+Output:
+32
+36
+
+#!/bin/bash
+
+while read c
+do
+    echo $c | wc -c
+done < $1
+---------------------------------------------------------------------------------------------------------------
+Example: Print the number of characters along with the line number
+
+Input:
+We are learning Shell Scripting
+We are working Red Hat Linux Server
+
+Output:
+1: 32
+2: 36
+
+#!/bin/bash
+
+i=1
+while read c
+do
+    char=`echo $c | wc -c`
+    echo "$i: $char"
+    ((i++))
+done < $1
+---------------------------------------------------------------------------------------------------------------
+Example: Script to print the names of employees with age greater than or equal to 25
+
+Input:
+Name ID Age
+abc 0001 20
+def 0002 28
+ghi 0003 38
+jkl 0004 22
+mno 0005 26
+pqr 0006 25
+
+#!/bin/bash
+
+sed 1d $1 > temp
+while read line
+do
+    age=`echo $line | awk '{print$3}'`
+    if [ $age -ge 25 ]; then
+        echo $line | awk '{print$1}'
+    fi
+done < temp
+rm temp
+
+(or)
+
+#!/bin/bash
+
+i=1
+while read line
+do
+    if [ $i -ne 1 ]; then
+        age=`echo $line | awk '{print$3}'`
+        if [ $age -ge 25 ]; then
+            echo $line | awk '{print$1}'
+        fi
+    fi
+    ((i++))
+done < $1
+---------------------------------------------------------------------------------------------------------------
+Example: Change the extensions of the files
+
+t1.txt --> t1.go
+t2.txt --> t2.go
+
+#!/bin/bash
+
+find . -maxdepth 1 -type f -name "*.txt" > temp
+
+while read line
+do
+    name=`echo $line | sed s/.txt/.go/g`
+    mv $line $name
+done < temp
+rm temp
+
